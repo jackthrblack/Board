@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <td>번호</td>
+            <td>작성자</td>
+            <td>제목</td>
+            <td>내용</td>
+            <td>시간</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td th:text="${board.boardId}"></td>
+            <td th:text="${board.boardWriter}"></td>
+            <td th:text="${board.boardTitle}"></td>
+            <td th:text="${board.boardContents}"></td>
+            <td th:text="${board.boardDate}"></td>
+        </tr>
+    </tbody>
+
+</table>
+
+</body>
+</html>

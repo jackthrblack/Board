@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        function deleteById(boardId){
+            const reqUrl = "/board/"+boardId;
+
+            $.ajax({
+                type: 'delete',
+                url: reqUrl,
+                success: function (result){
+                    location.href='/board/';
+                },
+                error:function (){
+                    alert("실패!")
+                }
+            });
+        }
+
+        function detail(boardId){
+
+            const reqUrl = "/board/"+boardId;
+
+            $.ajax({
+                type: 'post',
+                url: reqUrl,
+                datatype: 'json',
+                success: function (result){
+                    console.log(result);
+                    let output = "";
+                    output += "<table>\n" +
+                        "    <thead>\n" +
+                        "        <tr>\n" +
+                        "            <th>번호</th>\n" +
+                        "            <th>작성자</th>\n" +
+                        "            <th>제목</th>\n" +
+                        "            <th>내용</th>\n" +
+                        "            <th>시간</th>\n" +
+                        "        </tr>\n" +
+                        "    </thead>\n" +
+                        "    <tbody>\n" +
+                        "        <tr>\n" +
+                        "            <td>" + result.boardId+ "</td>\n" +
+                        "            <td>" + result.boardWriter + "</td>\n" +
+                        "            <td>" + result.boardTitle + "</td>\n" +
+                        "            <td>" + result.boardContents + "</td>\n" +
+                        "            <td>" + result.boardDate + "</td>\n" +
+                        "        </tr>\n" +
+                        "    </tbody>\n" +
+                        "</table>";
+                    document.getElementById("detail-view").innerHTML = output;
+                } ,
+                error: function (){
+                    alert('ajax 실패');
+                }
+            });
+
+
+        }
+
+    </script>
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <td>번호</td>
+            <td>작성자</td>
+            <td>제목</td>
+            <td>내용</td>
+            <td>시간</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="board: ${boardList}">
+            <td th:text="${board.boardId}"></td>
+            <td th:text="${board.boardWriter}"></td>
+            <td> <a th:href="@{|/board/${board.boardId}|}" th:text="${board.boardTitle}"></a></td>
+            <td th:text="${board.boardContents}"></td>
+            <td th:text="${board.boardDate}"></td>
+            <td><button th:onclick="deleteById([[${board.boardId}]])">삭제</button></td>
+            <td><button th:onclick="detail([[${board.boardId}]])">조회(아작이)</button></td>
+        </tr>
+    </tbody>
+
+</table>
+</body>
+</html>
