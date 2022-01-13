@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script>
+        function boardUpdate(){
+            const pw2=document.getElementById('boardPw').value;
+            const pwDB="[[${board.boardPassword}]]";
+
+            if(pw2==pwDB){
+                const id = document.getElementById('boardId').value;
+                const writer = document.getElementById('boardWriter').value;
+                const pw = document.getElementById('boardPw').value;
+                const title = document.getElementById('boardTitle').value;
+                const contents = document.getElementById('boardContents').value;
+
+                const updateData=JSON.stringify({
+                    boardId:id,
+                    boardWriter: writer,
+                    boardPw: pw,
+                    boardTitle: title,
+                    boardContents: contents
+                });
+
+                const reqUrl = "/board/"+id;
+                console.log(updateData);
+                $.ajax({
+                    type: 'put',
+                    data: updateData,
+                    url: reqUrl,
+                    contentType: 'application/json',
+                    success: function (){
+                        location.href="/board/"+id;
+                    },
+                    error: function (){
+                        alert('실패');
+                    }
+                });
+                document.update_form.submit()
+            }else{
+                alert("실패");
+            }
+        }
+    </script>
+
+    <script>
+        const update = () => {
+
+            const pw=document.getElementById('boardPw').value;
+            const pwDB="[[${board.boardPassword}]]";
+
+            if(pw==pwDB){
+                document.update_form.submit()
+            }else{
+                alert("실패");
+            }
+
+
+        }
+
+    </script>
+
+</head>
+<body>
+<h2>update</h2>
+
+<form action="/board/update" name="update_form" method="post">
+    <input type="hidden" name="boardId" th:value="${board.boardId}" id="boardId">
+    작성자:<input type="text" name="boardWriter" th:value="${board.boardWriter}" id="boardWriter" readonly>
+    비밀번호: <input type="text" name="boardPassword" th:value="${board.boardPassword}" id="boardPw">
+    제목: <input type="text" name="boardTitle" th:value="${board.boardTitle}" id="boardTitle">
+    내용: <input type="text" name="boardContents" th:value="${board.boardContents}" id="boardContents"><br>
+    <input type="button" value="수정(post)" th:onclick="update()">
+    <input type="button" value="수정(put)" th:onclick="boardUpdate()">
+</form>
+
+</body>
+</html>

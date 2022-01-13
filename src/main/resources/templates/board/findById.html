@@ -22,6 +22,7 @@
             <td th:text="${board.boardTitle}"></td>
             <td th:text="${board.boardContents}"></td>
             <td th:text="${board.boardDate}"></td>
+          <td><a th:href="@{|/board/update/${board.boardId}|}">수정</a></td>
         </tr>
     </tbody>
 

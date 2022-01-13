@@ -20,7 +20,47 @@
             });
         }
 
-        function detail(boardId){
+
+       const detail =(boardId) =>{
+            console.log(boardId);
+            const reqUrl = "/board/"+boardId;
+
+            $.ajax({
+               type: 'post',
+               url: reqUrl,
+               dataType:'json',
+               success: function (result) {
+                   console.log(result);
+                   let output = "";
+                   output += "<table>\n" +
+                       "    <thead>\n" +
+                       "        <tr>\n" +
+                       "            <th>번호</th>\n" +
+                       "            <th>제목</th>\n" +
+                       "            <th>작성자</th>\n" +
+                       "            <th>내용</th>\n" +
+                       "            <th>작성일자</th>\n" +
+                       "        </tr>\n" +
+                       "    </thead>\n" +
+                       "    <tbody>\n" +
+                       "        <tr>\n" +
+                       "            <td>" + result.boardId + "</td>\n" +
+                       "            <td>" + result.boardTitle + "</td>\n" +
+                       "            <td>" + result.boardWriter + "</td>\n" +
+                       "            <td>" + result.boardContents + "</td>\n" +
+                       "            <td>" + result.boardDate + "</td>\n" +
+                       "        </tr>\n" +
+                       "    </tbody>\n" +
+                       "</table>";
+                    document.getElementById('board-detail').innerHTML=output;
+               },
+                error: function (result){
+                   alert('ajax 실패');
+                }
+            });
+
+        }
+        /*function detail(boardId){
 
             const reqUrl = "/board/"+boardId;
 
@@ -59,7 +99,7 @@
             });
 
 
-        }
+        }*/
 
     </script>
 </head>
@@ -87,5 +127,7 @@
     </tbody>
 
 </table>
+<div id="board-detail"></div>
+
 </body>
 </html>

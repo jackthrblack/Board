@@ -27,7 +27,12 @@ public class BoardDetailDTO {
         boardDetailDTO.setBoardPassword(boardEntity.getBoardPassword());
         boardDetailDTO.setBoardTitle(boardEntity.getBoardTitle());
         boardDetailDTO.setBoardContents(boardEntity.getBoardContents());
-        boardDetailDTO.setBoardDate(boardEntity.getBoardDate());
+        if(boardEntity.getUpdateTime()==null){
+            boardDetailDTO.setBoardDate(boardEntity.getCreateTime());
+        }else {
+            boardDetailDTO.setBoardDate(boardEntity.getUpdateTime());
+        }
+       /* boardDetailDTO.setBoardDate(boardEntity.getBoardDate());*/
         return boardDetailDTO;
     }
 
