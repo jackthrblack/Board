@@ -19,7 +19,4 @@ public class BoardSaveDTO {
     private String boardContents;
     private LocalDateTime boardDate;
 
-
-
-
 }
