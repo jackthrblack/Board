@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class BoardSaveDTO {
 
     @NotBlank(message = "작성!")
@@ -17,6 +16,14 @@ public class BoardSaveDTO {
     private String boardPassword;
     private String boardTitle;
     private String boardContents;
-    private LocalDateTime boardDate;
 
+    public BoardSaveDTO(String boardWriter, String boardPassword, String boardTitle, String boardContents) {
+        this.boardWriter = boardWriter;
+        this.boardPassword = boardPassword;
+        this.boardTitle = boardTitle;
+        this.boardContents = boardContents;
+    }
 }
+
+
+

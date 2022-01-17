@@ -28,13 +28,13 @@ public class BoardTest {
     @Autowired
     private BoardRepository br;
 
-    @Test
+   @Test
     @DisplayName("글작성 30개")
     public void newBoard(){
         // IntStream 이용하여 새글 30개 DB에 저장하기
         IntStream.rangeClosed(1,30).forEach(i-> {
             bs.save(new BoardSaveDTO("글작성자"+i,"글비밀번호"+i,
-                    "글제목"+i,"글내용"+i, LocalDateTime.now()));
+                    "글제목"+i,"글내용"+i));
         });
     }
 
@@ -88,5 +88,13 @@ public class BoardTest {
         System.out.println("boardList.hasPrevious() = " + boardList.hasPrevious()); // 이전 페이지 존배 여부
         System.out.println("boardList.isFirst() = " + boardList.isFirst()); // 첫 페이지인지 여부
         System.out.println("boardList.isLast() = " + boardList.isLast()); // 마지막 페이지인지 여부
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    @DisplayName("게시글 삭제")
+    public void boardDelete(){
+       br.deleteById(1L);
     }
 }
