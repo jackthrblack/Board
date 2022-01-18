@@ -4,11 +4,14 @@ import com.icia.board.dto.CommentDetailDTO;
 import com.icia.board.dto.CommentSaveDTO;
 import com.icia.board.entity.BoardEntity;
 import com.icia.board.entity.CommentEntity;
+import com.icia.board.entity.MemberEntity;
 import com.icia.board.repository.BoardRepository;
 import com.icia.board.repository.CommentRepository;
+import com.icia.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +21,13 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository cr;
     private final BoardRepository br;
+    private final MemberRepository mr;
 
     @Override
     public Long save(CommentSaveDTO commentSaveDTO) {
         BoardEntity boardEntity= br.findById(commentSaveDTO.getBoardId()).get();
-        CommentEntity commentEntity = CommentEntity.toSaveEntity(commentSaveDTO, boardEntity);// 댓글정보와 원글(부모)엔티티 필요
+        MemberEntity memberEntity = mr.findById(commentSaveDTO.getMemberId()).get();
+        CommentEntity commentEntity = CommentEntity.toSaveEntity(commentSaveDTO, boardEntity, memberEntity);// 댓글정보와 원글(부모)엔티티 필요
         cr.save(commentEntity).getId();
         return cr.save(commentEntity).getId();
     }
@@ -36,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
             CommentDetailDTO commentDetailDTO = CommentDetailDTO.toCommentDetailDTO(c);
             commentList.add(commentDetailDTO);
         }
-        return null;
+        return commentList;
     }
 
 

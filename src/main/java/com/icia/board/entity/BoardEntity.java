@@ -34,6 +34,14 @@ public class BoardEntity extends BaseEntity {
     @Column(name = "boardContents")
     private String boardContents;
 
+    /*    @Column(name = "boardDate")
+    private LocalDateTime boardDate;*/
+
+    // 회원 엔티티와의 연관관계
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private MemberEntity memberEntity;
+
     // 댓글 연관관계
     // mapperBy => 연관관계를 맺었을때 누가 주체인가를 지정하는 것.
     //여기서 주체는 자식이고 boardEntity는 자식에있는 것
@@ -43,16 +51,16 @@ public class BoardEntity extends BaseEntity {
     @OneToMany(mappedBy = "boardEntity", cascade =CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) // 게시글 하나에 댓글이 여러개가 붙음.
     private List<CommentEntity> commentEntityList = new ArrayList<>();
 
-/*    @Column(name = "boardDate")
-    private LocalDateTime boardDate;*/
 
-    public static BoardEntity saveBoard(BoardSaveDTO boardSaveDTO) {
+
+    public static BoardEntity saveBoard(BoardSaveDTO boardSaveDTO, MemberEntity memberEntity) {
 
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setBoardWriter(boardSaveDTO.getBoardWriter());
         boardEntity.setBoardPassword(boardSaveDTO.getBoardPassword());
         boardEntity.setBoardTitle(boardSaveDTO.getBoardTitle());
         boardEntity.setBoardContents(boardSaveDTO.getBoardContents());
+        boardEntity.setMemberEntity(memberEntity);
         /*boardEntity.setBoardDate(LocalDateTime.now());*/
         return boardEntity;
     }

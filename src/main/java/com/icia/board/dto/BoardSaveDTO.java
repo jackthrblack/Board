@@ -8,9 +8,11 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class BoardSaveDTO {
 
+    private Long memberId;
     @NotBlank(message = "작성!")
     private String boardWriter;
     private String boardPassword;
@@ -23,6 +25,8 @@ public class BoardSaveDTO {
         this.boardTitle = boardTitle;
         this.boardContents = boardContents;
     }
+
+
 }
 
 

@@ -6,7 +6,9 @@ import com.icia.board.dto.BoardPagingDTO;
 import com.icia.board.dto.BoardSaveDTO;
 import com.icia.board.dto.BoardUpdateDTO;
 import com.icia.board.entity.BoardEntity;
+import com.icia.board.entity.MemberEntity;
 import com.icia.board.repository.BoardRepository;
+import com.icia.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,11 +25,14 @@ import java.util.Optional;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository br;
+    private final MemberRepository mr;
 
     @Override
     public Long save(BoardSaveDTO boardSaveDTO) {
 
-        BoardEntity boardEntity = BoardEntity.saveBoard(boardSaveDTO);
+        MemberEntity memberEntity = mr.findById(boardSaveDTO.getMemberId()).get() ;
+
+        BoardEntity boardEntity = BoardEntity.saveBoard(boardSaveDTO, memberEntity);
 
         return br.save(boardEntity).getId();
     }

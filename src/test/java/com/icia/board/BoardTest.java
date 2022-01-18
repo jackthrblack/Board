@@ -3,9 +3,12 @@ package com.icia.board;
 import com.icia.board.common.PagingConst;
 import com.icia.board.dto.BoardPagingDTO;
 import com.icia.board.dto.BoardSaveDTO;
+import com.icia.board.dto.MemberDetailDTO;
+import com.icia.board.dto.MemberSaveDTO;
 import com.icia.board.entity.BoardEntity;
 import com.icia.board.repository.BoardRepository;
 import com.icia.board.service.BoardService;
+import com.icia.board.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +31,17 @@ public class BoardTest {
     @Autowired
     private BoardRepository br;
 
+    @Autowired
+    private MemberService ms;
+
    @Test
     @DisplayName("글작성 30개")
     public void newBoard(){
         // IntStream 이용하여 새글 30개 DB에 저장하기
+       Long memberId =ms.save(new MemberSaveDTO("이메일","비밀번호","이름"));
         IntStream.rangeClosed(1,30).forEach(i-> {
-            bs.save(new BoardSaveDTO("글작성자"+i,"글비밀번호"+i,
-                    "글제목"+i,"글내용"+i));
+            MemberDetailDTO findMember = ms.findById(memberId);
+            bs.save(new BoardSaveDTO(memberId,"작성자"+i, "비밀번호"+i,"주제"+i,"내용"+i));
         });
     }
 
